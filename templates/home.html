@@ -5,6 +5,9 @@
   <!--link rel="stylesheet" href="static/home.css"-->
 </head>
 <body>
-  <h1>ayy lmao</h1>
+  <h2>Top {{n}} links for <u><i>{{s}}</i></u></h2>
+  {% for x in links %}
+  <a href ="{{''.join([x])}}">{{x}}</a><br>
+  {% endfor %}
 </body> 
 </html>
