@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
 
-import bs4, google, requests, urllib2, re
+import google, requests, urllib2, re
+from bs4 import BeautifulSoup
 
 
 def printLinks(searchQuery, linksPerPage):
@@ -18,11 +19,14 @@ def printLinks(searchQuery, linksPerPage):
 def displayText(links):
     linktext = ""
     for url in links:
-        urltext = urllib2.urlopen(url)
-        text = BeautifulSoup(urltext.read())
-        urltext.close()
-        linktext += text
+        #urltext = urllib2.urlopen(url)
+        r=requests.get(url)
+        soup = BeautifulSoup(r.content)
+        text=soup.prettify()
+        #urltext.close()
+        linktext += text.encode('utf-8')
     return linktext
+
 
 
 def findNames(links):
@@ -37,7 +41,8 @@ def findNames(links):
                 namelist.append(x)
     return namelist
 
-#using Terrance's code for now        
+#using Terrance's code for now    
+
 def findnames(d):
     data = d
     capital=re.findall('[A-Z]\w+',data)
@@ -80,7 +85,6 @@ def appendnorep(list1,list2):
         if x not in list2:
             list2.append(x)
 #end of Terrance's code
-
 app = Flask(__name__)
 
 @app.route("/",methods=['GET','POST'])
@@ -94,5 +98,12 @@ def home():
         return render_template("home.html")
 
 if __name__ == "__main__":
+    f=open("out.txt","w")
+    text=displayText(printLinks("hey",3))
+    #print text
+    f.write(str(text))
+    f.close()
+    print "done"
     app.debug = True
+
     app.run()
