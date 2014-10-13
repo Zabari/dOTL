@@ -27,53 +27,44 @@ def displayText(links):
     return linktext
 
 def findNames():
-    return findnames("out.txt")
+    d= nameFind("out.txt")
+    top1 = 0;
+    top2 = 0;
+    top3 = 0;
+    topnames=["fill","fill","fill"]
+    for x in d:
+        if (d[x]>top1):
+            top3 = top2
+            top2 = top1
+            top1 = d[x]
+            topnames=[x,topnames[0],topnames[1]]
+        elif (d[x]>top2):
+            top3 = top2
+            top2 = d[x]
+            topnames=[topnames[0],x,topnames[1]]
+        elif (d[x]>top3):
+            top3 = d[x]
+            topnames=[topnames[0],topnames[1],x]
+    return topnames
 
-#using Terrance's code for now    
-
-def findnames(d):
-    f=open(d,'r')
-    data = f.read()
-    capital=re.findall('[A-Z]\w+',data)
-    fullnames=re.findall('[A-Z]\w+ [A-Z]\w+', data)
-    titles=re.findall("(?:Dr|Mr|Mrs|Ms|Prof)\.[A-Z]\w+",data)
-    suffixes=re.findall("[A-Z]\w+ (?:Sr|Jr|PhD|MD)\.?",data)
-    begofsent=re.findall("(?:\.|\?|\!)\s([A-Z]\w+)",data)
+#using Daniel's code
+def nameFind(fil):
+    f=open(fil,'r')
+    s=f.read()
     f.close()
-    names=[]
-    appendnorep(fullnames,names)
-    appendnorep(titles,names)
-    appendnorep(suffixes,names)
-    unsure=appeared(capital,names)
-    for x in capital:
-        if not appearwithin(x,names) and x not in begofsent:
-            names.append(x)
-            if x in unsure:
-                unsure.remove(x)
-    return names #+unsure
-
-def appeared(unconf,conf):
-    repeat=[]
-    uns=[]
-    for x in unconf:
-        if appearwithin(x,conf):
-            repeat.append(x)
-    for x in unconf:
-        if x not in repeat and x not in uns:
-            uns.append(x)
-    return uns
-
-def appearwithin(x,group):
-    for a in group:
-        if x in a:
-            return True
-    return False
-
-def appendnorep(list1,list2):
-    for x in list1:
-        if x not in list2:
-            list2.append(x)
-#end of Terrance's code
+    #p=re.compile("(([A-Z][a-z]*)\s([A-Z][a-z]*))")
+    #p=re.compile("([A-Z][a-z]*\s*){2,}")
+    p=re.compile("([A-Z][a-z]*)\s([A-Z][a-z]*)")
+    pre= p.findall(s)  
+    r=re.compile('((?<![\.\!\?\"])(?<![\.\!\?\"\:\;]\s)(?<![\.\!\?\"\;\:]\s\s)[A-Z][a-z]+)')
+    l=r.findall(s)
+    for f in pre:
+        for se in f:
+            l.append(se)
+    d={name: s.count(name) for name in l}
+    #for name in r.findall(s):
+    #    print name+":" +str(s.count(name))
+    return d
 
 app = Flask(__name__)
 
@@ -89,11 +80,13 @@ def home():
 
 if __name__ == "__main__":
     f=open("out.txt","w")
-    text=displayText(printLinks("hey",3))
+    text=displayText(printLinks("who is Spiderman?",3))
     #print text
     f.write(str(text))
     f.close()
     print "done"
+    print 
+    print nameFind("out.txt")
     app.debug = True
 
     app.run()
