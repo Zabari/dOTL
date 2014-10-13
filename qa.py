@@ -89,7 +89,7 @@ def home():
     if request.method=="POST":
         searchQ = request.form["searchq"]
         n = int(request.form["nresults"])
-        return render_template("results.html",n=n,s=searchQ,links=printLinks(searchQ,n),namelist=displayText(printLinks(searchQ,n)))
+        return render_template("results.html",n=n,s=searchQ,links=printLinks(searchQ,n))
     else:
         return render_template("home.html")
 
