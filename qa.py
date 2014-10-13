@@ -15,7 +15,6 @@ def printLinks(searchQuery, linksPerPage):
             links.append(url)
     return links
 
-#not exactly sure how to open the url correctly
 def displayText(links):
     linktext = ""
     for url in links:
@@ -27,24 +26,14 @@ def displayText(links):
         linktext += text.encode('utf-8')
     return linktext
 
-
-
-def findNames(links):
-    namelist = []
-    for url in links:
-        urltext = urllib2.urlopen(url)
-        text = BeautifulSoup(urltext.read())
-        urltext.close()
-        templist = findnames(text.getText())
-        for x in templist:
-            if x not in namelist:
-                namelist.append(x)
-    return namelist
+def findNames():
+    return findnames("out.txt")
 
 #using Terrance's code for now    
 
 def findnames(d):
-    data = d
+    f=open(d,'r')
+    data = f.read()
     capital=re.findall('[A-Z]\w+',data)
     fullnames=re.findall('[A-Z]\w+ [A-Z]\w+', data)
     titles=re.findall("(?:Dr|Mr|Mrs|Ms|Prof)\.[A-Z]\w+",data)
@@ -85,6 +74,7 @@ def appendnorep(list1,list2):
         if x not in list2:
             list2.append(x)
 #end of Terrance's code
+
 app = Flask(__name__)
 
 @app.route("/",methods=['GET','POST'])
