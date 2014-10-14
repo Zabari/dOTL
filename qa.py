@@ -54,7 +54,7 @@ def nameFind(fil):
     f.close()
     #p=re.compile("(([A-Z][a-z]*)\s([A-Z][a-z]*))")
     #p=re.compile("([A-Z][a-z]*\s*){2,}")
-    p=re.compile("([A-Z][a-z]*)\s([A-Z][a-z]*)")
+    p=re.compile("([A-Z][a-z]+)\s([A-Z][a-z]+)")
     pre= p.findall(s)  
     r=re.compile('((?<![\.\!\?\"])(?<![\.\!\?\"\:\;]\s)(?<![\.\!\?\"\;\:]\s\s)[A-Z][a-z]+)')
     l=r.findall(s)
