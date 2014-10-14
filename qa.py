@@ -61,7 +61,7 @@ def nameFind(fil):
     L=help()
     for x in capital:
         if x in L:
-            names+=x
+            names.append(x)
     d={name: data.count(name) for name in names}  
     s='''
     appendnorep(fullnames,names)
@@ -133,5 +133,6 @@ if __name__ == "__main__":
     #print findNames()
     app.debug = True
     #print help()
-    print nameFind('out.txt')
+    #print nameFind('out.txt')
+    print findNames()
     app.run()
