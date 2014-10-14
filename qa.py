@@ -75,16 +75,20 @@ def nameFind(fil):
     #for name in r.findall(s):
     #    print name+":" +str(s.count(name))
     defnames=[]
+    weirdwords=["The","Man","As"]
     for x in names:
         tempsplit=x.split()
-        atleastname = False
-        for sname in tempsplit:
-            if sname in L:
-                atleastname = True
-        if atleastname:
+        weirdname=False
+        validname=False
+        if len(tempsplit)>1:
+            for sname in tempsplit:
+                if sname in weirdwords and not weirdname:
+                    weirdname=True
+                if sname in L:
+                    validname=True
+        if validname and not weirdname:
             defnames.append(x)
     d={name: data.count(name) for name in defnames}  
-    
     return d
 
 def appeared(unconf,conf):
