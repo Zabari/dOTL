@@ -63,25 +63,27 @@ def nameFind(fil):
     begofsent=re.findall("(?:\.|\?|\!)\s([A-Z]\w+)",data)
     names=[]
     L=help()
-    for x in capital:
-        if x in L:
-            names.append(x)
-    d={name: data.count(name) for name in names}  
-    s='''
     appendnorep(fullnames,names)
     appendnorep(titles,names)
     appendnorep(suffixes,names)
     unsure=appeared(capital,names)
-    L=help()
     for x in capital:
         if not appearwithin(x,names) and x not in begofsent:
             names.append(x)
             if x in unsure:
                 unsure.remove(x)
-    d={name: data.count(name) for name in names}
     #for name in r.findall(s):
     #    print name+":" +str(s.count(name))
-    '''
+    defnames=[]
+    for x in names:
+        tempsplit=x.split()
+        atleastname = False
+        for sname in tempsplit:
+            if sname in L:
+                atleastname = True
+        if atleastname:
+            defnames.append(x)
+    d={name: data.count(name) for name in defnames}  
     
     return d
 
