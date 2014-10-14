@@ -26,7 +26,11 @@ def displayText(links):
         linktext += text.encode('utf-8')
     return linktext
 
-def findNames():
+def findNames(links):
+    f=open("out.txt","w")
+    text=displayText(links)
+    f.write(str(text))
+    f.close()
     d= nameFind("out.txt")
     top1 = 0;
     top2 = 0;
@@ -119,20 +123,11 @@ def home():
     if request.method=="POST":
         searchQ = request.form["searchq"]
         n = int(request.form["nresults"])
-        return render_template("results.html",n=n,s=searchQ,links=printLinks(searchQ,n))
+        urllinks = printLinks(searchQ,n)
+        return render_template("results.html",n=n,s=searchQ,results=findNames(urllinks),links=urllinks, namelist=nameFind("out.txt"))
     else:
         return render_template("home.html")
 
 if __name__ == "__main__":
-    f=open("out.txt","w")
-    text=displayText(printLinks("who is Spiderman?",3))
-    #print text
-    f.write(str(text))
-    f.close()
-    print "done"
-    #print findNames()
     app.debug = True
-    #print help()
-    #print nameFind('out.txt')
-    print findNames()
     app.run()

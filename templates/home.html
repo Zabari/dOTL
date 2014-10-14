@@ -1,31 +1,36 @@
 <!DOCTYPE html> 
 <html>
-<head>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-  <!--link rel="stylesheet" href="static/home.css"-->
-</head>
-<body>
+  <head>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!--link rel="stylesheet" href="static/home.css"-->
+  </head>
+  <body>
 
-  <form method = "POST" class="pure-form pure-form-stacked">
-    <fieldset>
-      <legend><h1>dOTL Search</h1></legend>
+    <form method = "POST" class="pure-form pure-form-stacked">
+      <fieldset>
+	<legend><h1>dOTL Search</h1></legend>
 
-      <label for="squery">Search</label>
-      <input id="squery" type="text" name="searchq" placeholder="Search Query">
-      <br>
-      <label for="numresults">Number of Links to Analyze: </label>
-      <select id="numresults" name="nresults">
-        <option>5</option>
-        <option>10</option>
-        <option>15</option>
-        <option>20</option>
-        <option>25</option>
-      </select>
-      <br>
-      <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-search"></i> Search</button>
-    </fieldset>
-  </form>
+	<label for="squery">Search</label>
+	<input id="squery" type="text" name="searchq" placeholder="Search Query">
+	<br>
+	<label for="numresults">Number of Links to Analyze: </label>
+	<select id="numresults" name="nresults">
+          <option>5</option>
+          <option>10</option>
+          <option>15</option>
+	</select>
+	<br>
+	<button type="submit" class="pure-button pure-button-primary"><i class="fa fa-search"></i> Search</button>
+      </fieldset>
+    </form>
+    
+    <br>
+    <br>
+    <br>
+    <font size="1"> Note: As of now the program is meant to search for Who questions <br>
+      Note: The more links that you choose to analyze, the longer the program will take
+    </font>
 
-</body> 
+  </body> 
 </html>

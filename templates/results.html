@@ -1,20 +1,39 @@
 <!DOCTYPE html> 
 <html>
-<head>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-</head>
-<body>
-  <h2>Top {{n}} links for <u><i>{{s}}</i></u></h2>
-  {% for x in links %}
-  <a href ="{{''.join([x])}}">{{x}}</a><br>
-  {% endfor %}
-  <br>
-  <br>
-  <h2> These are the names we accumulated in all the files: </h2>
-  {{namelist}}
+  <head>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  </head>
+  <body>
+    <form method = "POST" class="pure-form pure-form-stacked">
+      <fieldset>
+	<legend><h1>dOTL Search</h1></legend>
+	<h2>Top 3 results for <u><i>{{s}}</i></u>, using the top {{n}} links</h2>
+	{% for res in results %}
+	<h3>{{res}}</h3>
+	{% endfor %}
+	<br>
+	<b>Links Used:</b> <br>
+	{% for x in links %}
+	<a href ="{{''.join([x])}}">{{x}}</a><br>
+	{% endfor %}
+	<br>
+	<br>
+	<a class = "pure-button pure-button-primary" href="/"><i class="fa fa-home"></i> Return Home </a>
+	<br>
+	<br>
+	<font size="1">
+	  Note: The name function right now is not working properly. Sorry for that.
+	</font>
+	<br>
+
+	<h2> These are the names we accumulated in all the files: </h2>
+	<font size = "2">
+	  {% for name in namelist %}
+	  <b> {{name}}</b> - {{namelist[name]}} <br>
+	  {% endfor %}
+	</font>
 
 
-
-</body> 
+  </body> 
 </html>
