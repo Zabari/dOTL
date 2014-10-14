@@ -50,66 +50,22 @@ def findNames():
 #using Daniel's code
 def nameFind(fil):
     f=open(fil,'r')
-    data=f.read()
+    s=f.read()
     f.close()
-    capital=re.findall('[A-Z][a-z]+',data)
-    fullnames=re.findall('[A-Z][a-z]+ [A-Z][a-z]+', data)
-    titles=re.findall("(?:Dr|Mr|Mrs|Ms|Prof)\.[A-Z]\w+",data)
-    suffixes=re.findall("[A-Z]\w+ (?:Sr|Jr|PhD|MD)\.?",data)
-    begofsent=re.findall("(?:\.|\?|\!)\s([A-Z]\w+)",data)
-    names=[]
-    L=help()
-    for x in capital:
-        if x in L:
-            names+=x
-    d={name: data.count(name) for name in names}  
-    s='''
-    appendnorep(fullnames,names)
-    appendnorep(titles,names)
-    appendnorep(suffixes,names)
-    unsure=appeared(capital,names)
-    L=help()
-    for x in capital:
-        if not appearwithin(x,names) and x not in begofsent:
-            names.append(x)
-            if x in unsure:
-                unsure.remove(x)
-    d={name: data.count(name) for name in names}
+    #p=re.compile("(([A-Z][a-z]*)\s([A-Z][a-z]*))")
+    #p=re.compile("([A-Z][a-z]*\s*){2,}")
+    p=re.compile("([A-Z][a-z]*)\s([A-Z][a-z]+)")
+    pre= p.findall(s)  
+    r=re.compile('((?<![\.\!\?\"])(?<![\.\!\?\"\:\;]\s)(?<![\.\!\?\"\;\:]\s\s)[A-Z][a-z]+)')
+    l=r.findall(s)
+    for f in pre:
+        for se in f:
+            l.append(se)
+    d={name: s.count(name) for name in l}
+    d=max(d.iterkeys(), key=(lambda key: d[key]))
     #for name in r.findall(s):
     #    print name+":" +str(s.count(name))
-    '''
-    
     return d
-
-def appeared(unconf,conf):
-    repeat=[]
-    uns=[]
-    for x in unconf:
-        if appearwithin(x,conf):
-            repeat.append(x)
-    for x in unconf:
-        if x not in repeat and x not in uns:
-            uns.append(x)
-    return uns
-
-def appearwithin(x,group):
-    for a in group:
-        if x in a:
-            return True
-    return False
-
-def appendnorep(list1,list2):
-    for x in list1:
-        if x not in list2:
-            list2.append(x)
-
-def help():
-    f=open('names.txt','r')
-    L=f.readlines()
-    f.close()
-    for i in range(len(L)):
-        L[i]=L[i].title()[:-2]
-    return L
 
 app = Flask(__name__)
 
@@ -130,8 +86,9 @@ if __name__ == "__main__":
     f.write(str(text))
     f.close()
     print "done"
+    print 
     #print findNames()
+    print nameFind("out.txt")
     app.debug = True
-    #print help()
-    print nameFind('out.txt')
+
     app.run()
