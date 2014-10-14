@@ -50,21 +50,52 @@ def findNames():
 #using Daniel's code
 def nameFind(fil):
     f=open(fil,'r')
-    s=f.read()
+    data=f.read()
     f.close()
-    #p=re.compile("(([A-Z][a-z]*)\s([A-Z][a-z]*))")
-    #p=re.compile("([A-Z][a-z]*\s*){2,}")
-    p=re.compile("([A-Z][a-z]+)\s([A-Z][a-z]+)")
-    pre= p.findall(s)  
-    r=re.compile('((?<![\.\!\?\"])(?<![\.\!\?\"\:\;]\s)(?<![\.\!\?\"\;\:]\s\s)[A-Z][a-z]+)')
-    l=r.findall(s)
-    for f in pre:
-        for se in f:
-            l.append(se)
-    d={name: s.count(name) for name in l}
+    capital=re.findall('[A-Z]\w+',data)
+    fullnames=re.findall('[A-Z][a-z]+ [A-Z][a-z]+', data)
+    titles=re.findall("(?:Dr|Mr|Mrs|Ms|Prof)\.[A-Z]\w+",data)
+    suffixes=re.findall("[A-Z]\w+ (?:Sr|Jr|PhD|MD)\.?",data)
+    begofsent=re.findall("(?:\.|\?|\!)\s([A-Z]\w+)",data)
+    names=[]
+    appendnorep(fullnames,names)
+    appendnorep(titles,names)
+    appendnorep(suffixes,names)
+    unsure=appeared(capital,names)
+    for x in capital:
+        if not appearwithin(x,names) and x not in begofsent:
+            names.append(x)
+            if x in unsure:
+                unsure.remove(x)
+    d={name: data.count(name) for name in names}
     #for name in r.findall(s):
     #    print name+":" +str(s.count(name))
     return d
+
+def appeared(unconf,conf):
+    repeat=[]
+    uns=[]
+    for x in unconf:
+        if appearwithin(x,conf):
+            repeat.append(x)
+    for x in unconf:
+        if x not in repeat and x not in uns:
+            uns.append(x)
+    return uns
+
+def appearwithin(x,group):
+    for a in group:
+        if x in a:
+            return True
+    return False
+
+def appendnorep(list1,list2):
+    for x in list1:
+        if x not in list2:
+            list2.append(x)
+
+
+
 
 app = Flask(__name__)
 
@@ -85,8 +116,7 @@ if __name__ == "__main__":
     f.write(str(text))
     f.close()
     print "done"
-    print 
-    print nameFind("out.txt")
+    print findNames()
     app.debug = True
 
     app.run()
